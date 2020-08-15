@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private enum materialsType {BOUNCE, STATIC} 
+    public enum materialsType {BOUNCE, STATIC} 
     public PhysicsMaterial2D bounceMaterial;
     public PhysicsMaterial2D staticMaterial;
+    public bool isFirstBullet = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,7 @@ public class Bullet : MonoBehaviour
         
     }
 
-    private void changeMaterial(materialsType type) 
+    public void changeMaterial(materialsType type) 
     {
         switch (type) {
             case materialsType.BOUNCE :
@@ -36,6 +38,15 @@ public class Bullet : MonoBehaviour
         changeMaterial(materialsType.STATIC);
         if (trigger.tag == "Bumper") {
             trigger.GetComponents<Bumper>()[0].bump(gameObject);
+        } else if (trigger.tag == "Trigger-waitting-bullet") {
+            gameObject.tag = "Waitting-bullet";
+            gameObject.layer = 0;
         }
+    }
+
+    private void OnMouseUp() {
+        Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        Camera.main.gameObject.GetComponent<Game>().ShotEvent(worldPosition);
     }
 }

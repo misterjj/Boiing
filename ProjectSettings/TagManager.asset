@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bumper
   - Bullet
+  - Waitting-bullet
+  - Trigger-waitting-bullet
   layers:
   - Default
   - TransparentFX

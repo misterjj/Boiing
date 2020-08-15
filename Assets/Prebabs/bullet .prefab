@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1039230692}
   m_Layer: 0
   m_Name: 'bullet '
-  m_TagString: Bullet
+  m_TagString: Waitting-bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,5 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867a2e108485b5544b3bd259f4e821de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceMaterial: {fileID: 0}
-  staticMaterial: {fileID: 0}
+  bounceMaterial: {fileID: 6200000, guid: 75bb94b6f5164e543867606ca3e98599, type: 2}
+  staticMaterial: {fileID: 6200000, guid: 7f4c7e2b37128374eb4f46889a507528, type: 2}
+  isFirstBullet: 0
