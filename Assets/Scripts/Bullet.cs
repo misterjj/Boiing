@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        changeMaterial(materialsType.BOUNCE);
+        changeMaterial(materialsType.STATIC);
     }
 
     // Update is called once per frame
@@ -34,7 +34,6 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D trigger) {
         changeMaterial(materialsType.STATIC);
-        Debug.Log(trigger.tag);
         if (trigger.tag == "Bumper") {
             trigger.GetComponents<Bumper>()[0].bump(gameObject);
         }
