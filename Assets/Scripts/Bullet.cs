@@ -49,6 +49,14 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D other) 
+    {
+        if (other.gameObject.tag == "Obstacle") 
+        {
+            other.gameObject.GetComponent<Obstacle>().Hit(1);
+        }
+    }
+
     private void OnMouseUp() {
         if (isFirstBullet) {
             Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
