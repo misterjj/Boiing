@@ -9,18 +9,22 @@ public class Game : MonoBehaviour
     public GameObject shotPosition;
     public GameObject bulletPrefab;
     public int bulletCount;
+    public GameObject[] posibleObstacle;
+    public Transform[] posibleSpawnObstacle;
+    public int maxObstaclePoint;
+    public float difficultyScale;
     private int bulletInvoked = 0;
     private GameObject closestBullet;
     private Vector2 shotDirection;
     private int bulletShoted = 0;
     private int bulletWaitting = 0;
     private bool readyToShot = false;
+    private int level = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         InvokeRepeating("InstantiateBullet", 0f, spawnerRate);
-        Invoke("NewLevel", bulletCount * spawnerRate);
     }
 
     // Update is called once per frame
@@ -51,8 +55,25 @@ public class Game : MonoBehaviour
 
     private void NewLevel()
     {
+        level++;
+
+        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+        foreach(GameObject obs in obstacles) {
+            obs.transform.position += Vector3.up;
+        }
+
+        GameObject obstacleTemplate = posibleObstacle[(int)Random.Range(0f, (float)posibleObstacle.Length)];
+        Transform obstacleSpwanPosition = posibleSpawnObstacle[(int)Random.Range(0f, (float)posibleSpawnObstacle.Length)];
+        GameObject obstacle = Instantiate(obstacleTemplate, obstacleSpwanPosition.position, obstacleSpwanPosition.rotation);
+        obstacle.GetComponent<Obstacle>().initialPoint = GetObstacleInitPoint();
+
         PrepareToShot(true);
         readyToShot = true;
+    }
+
+    private int GetObstacleInitPoint() 
+    {
+        return (int)(maxObstaclePoint-maxObstaclePoint*Mathf.Exp(-level/difficultyScale));
     }
 
     void GetNextWaittingBullet() 

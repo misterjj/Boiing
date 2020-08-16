@@ -11,7 +11,6 @@ public class Obstacle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        initialPoint = 100;
         currentPoint = initialPoint;
         Display();
     }
