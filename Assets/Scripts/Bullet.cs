@@ -35,18 +35,25 @@ public class Bullet : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D trigger) {
-        changeMaterial(materialsType.STATIC);
-        if (trigger.tag == "Bumper") {
-            trigger.GetComponents<Bumper>()[0].bump(gameObject);
-        } else if (trigger.tag == "Trigger-waitting-bullet") {
+        if (trigger.tag == "Trigger-waitting-bullet") {
+            Camera.main.gameObject.GetComponent<Game>().NewWaittingBullet();
             gameObject.tag = "Waitting-bullet";
             gameObject.layer = 0;
         }
     }
 
+    private void OnTriggerStay2D(Collider2D trigger) {
+        if (trigger.tag == "Bumper") {
+            changeMaterial(materialsType.STATIC);
+            trigger.GetComponents<Bumper>()[0].bump(gameObject);
+        }
+    }
+
     private void OnMouseUp() {
-        Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        Camera.main.gameObject.GetComponent<Game>().ShotEvent(worldPosition);
+        if (isFirstBullet) {
+            Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+            Camera.main.gameObject.GetComponent<Game>().ShotEvent(worldPosition);
+        }
     }
 }
