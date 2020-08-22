@@ -30,5 +30,13 @@ public class Obstacle : MonoBehaviour
         Color color = gradient.Evaluate(time);
         gameObject.GetComponent<SpriteRenderer>().color = color;
         gameObject.GetComponentInChildren<TextMesh>().text = currentPoint.ToString();
+
+        Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
+        foreach(Renderer renderer in renderers) {
+            if (renderer.gameObject.name == "glow") {
+                renderer.sharedMaterial.SetColor("_Color", color);
+                renderer.material.SetVector("_EmissionColor", Color.white * 50f);
+            }
+        }
     }
 }
