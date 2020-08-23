@@ -7,6 +7,7 @@ public class Obstacle : MonoBehaviour
     public Gradient gradient;
     public int maxPoint;
     public int initialPoint;
+    public GameObject rippleTemplate;
     private int currentPoint;
     // Start is called before the first frame update
     void Start()
@@ -15,8 +16,12 @@ public class Obstacle : MonoBehaviour
         Display();
     }
 
-    public void Hit(int damage = 1) 
+    public void Hit(int damage, Collision2D other) 
     {
+        // spawn ripple effect
+        GameObject ripple = Instantiate(rippleTemplate, other.GetContact(0).point, other.transform.rotation);
+        Destroy(ripple, 0.6f);
+        // calcule damage
         currentPoint -= damage;
         if (currentPoint <= 0) {
             Destroy(gameObject);

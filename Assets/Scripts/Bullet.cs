@@ -53,7 +53,7 @@ public class Bullet : MonoBehaviour
     {
         if (other.gameObject.tag == "Obstacle") 
         {
-            other.gameObject.GetComponent<Obstacle>().Hit(1);
+            other.gameObject.GetComponent<Obstacle>().Hit(1, other);
         }
     }
 
