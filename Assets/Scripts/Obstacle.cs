@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+    [GradientUsageAttribute(true)]
     public Gradient gradient;
     public int maxPoint;
     public int initialPoint;
