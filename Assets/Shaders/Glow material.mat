@@ -39,8 +39,8 @@ Material:
     m_Floats:
     - Vector1_13E47D5D: 0.99
     - _Color: 0.99
-    - _Thickness: 0.99
+    - _Thickness: 0.749
     m_Colors:
     - Color_5E402D59: {r: 4, g: 0.000000333786, b: 0, a: 1}
-    - _Color: {r: 1, g: 0, b: 0.17502499, a: 1}
+    - _Color: {r: 5.3403134, g: 0, b: 0.30755633, a: 1}
   m_BuildTextureStacks: []
