@@ -13,6 +13,8 @@ public class Game : MonoBehaviour
     public Transform[] posibleSpawnObstacle;
     public int maxObstaclePoint;
     public float difficultyScale;
+    public GameObject levelTextValue;
+    public GameObject scoreTextValue;
     private int bulletInvoked = 0;
     private GameObject closestBullet;
     private Vector2 shotDirection;
@@ -20,6 +22,7 @@ public class Game : MonoBehaviour
     private int bulletWaitting = 0;
     private bool readyToShot = false;
     private int level = 0;
+    private int score = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +58,9 @@ public class Game : MonoBehaviour
 
     private void NewLevel()
     {
+        UpdateScore();
         level++;
+        levelTextValue.GetComponent<TextMesh>().text = level.ToString();
 
         GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach(GameObject obs in obstacles) {
@@ -136,4 +141,12 @@ public class Game : MonoBehaviour
             bulletShoted++;
         }
     }
+
+    public void UpdateScore()
+    {
+        score += level;
+        scoreTextValue.GetComponent<TextMesh>().text = score.ToString("0000000");
+    }
+
+
 }

@@ -27,6 +27,7 @@ public class Obstacle : MonoBehaviour
         if (currentPoint <= 0) {
             Destroy(gameObject);
         }
+        Camera.main.GetComponent<Game>().UpdateScore();
         Display();
     }
 
