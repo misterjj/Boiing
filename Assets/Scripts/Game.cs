@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
@@ -15,12 +17,14 @@ public class Game : MonoBehaviour
     public float difficultyScale;
     public GameObject levelTextValue;
     public GameObject scoreTextValue;
+    public GameObject canvasGameOver;
     private int bulletInvoked = 0;
     private GameObject closestBullet;
     private Vector2 shotDirection;
     private int bulletShoted = 0;
     private int bulletWaitting = 0;
     private bool readyToShot = false;
+    private bool gameOver = false;
     private int level = 0;
     private int score = 0;
 
@@ -111,7 +115,7 @@ public class Game : MonoBehaviour
 
     public void ShotEvent(Vector2 eventPosition)
     {
-        if (readyToShot) {
+        if (readyToShot && !gameOver) {
             bulletWaitting = 0;
             bulletShoted = 0;
             Vector2 heading = eventPosition - (Vector2)shotPosition.transform.position;
@@ -149,4 +153,15 @@ public class Game : MonoBehaviour
     }
 
 
+    public void GameOver()
+    {
+        gameOver = true;
+        canvasGameOver.SetActive(true);
+        GameObject.Find("/Canvas Game Over/value").GetComponent<Text>().text = score.ToString("0000000");
+    }
+
+    public void Restart() 
+    {
+        SceneManager.LoadScene("Game");
+    }
 }

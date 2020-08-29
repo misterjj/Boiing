@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 8290987040279096792}
   - component: {fileID: 8290987040279096795}
   - component: {fileID: 8290987040279096794}
+  - component: {fileID: 8652753024967568737}
   m_Layer: 0
   m_Name: Obstacle 3
   m_TagString: Obstacle
@@ -421,3 +422,24 @@ MonoBehaviour:
   maxPoint: 200
   initialPoint: 10
   rippleTemplate: {fileID: 1405990182458720351, guid: 84c6118f900fa4347908fb16bfcc89ed, type: 3}
+--- !u!50 &8652753024967568737
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8290987040279096797}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
