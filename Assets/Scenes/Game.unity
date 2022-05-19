@@ -1158,7 +1158,6 @@ MonoBehaviour:
   spawnerRate: 0.03
   shotPosition: {fileID: 669890593}
   bulletPrefab: {fileID: 1941592354553203978, guid: 17566c26428de944b884d6da67561762, type: 3}
-  bulletProjectionPrefab: {fileID: 2090739305883810524, guid: 0ce21034c68e6614183ae330f0636c7e, type: 3}
   bulletsParent: {fileID: 1832283646}
   bulletCount: 30
   posibleObstacle:
@@ -1339,7 +1338,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa9f2a404c3e1c643ad92b9c34b013c9, type: 2}
+  - {fileID: 2100000, guid: 7e1bfdf68bc1ea945983cd4197106178, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1360,8 +1359,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: -5.4, z: 0}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -1382,8 +1380,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+      key1: {r: 0.7294118, g: 0.7294118, b: 0.7294118, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1412,8 +1410,8 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 3
-    shadowBias: 0.5
+    textureMode: 1
+    shadowBias: 0
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
