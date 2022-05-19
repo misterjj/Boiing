@@ -10,9 +10,11 @@ public class Game : MonoBehaviour
     public float spawnerRate;
     public GameObject shotPosition;
     public GameObject bulletPrefab;
+    public GameObject bulletsParent;
     public int bulletCount;
     public GameObject[] posibleObstacle;
     public Transform[] posibleSpawnObstacle;
+    public GameObject ObstaclesParent;
     public int maxObstaclePoint;
     public float difficultyScale;
     public GameObject levelTextValue;
@@ -27,6 +29,11 @@ public class Game : MonoBehaviour
     private bool gameOver = false;
     private int level = 0;
     private int score = 0;
+    private bool projection = false;
+
+    public float timeBeforeReSimulate = 1f;
+    public float timeBeforeSinceSimulate = 0f;
+   
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +44,10 @@ public class Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (projection)
+        {
+            GetComponent<Projection>().SimulateTrajectory(bulletPrefab, shotPosition.transform.position, shotDirection);
+        }
     }
 
     void InstantiateBullet() 
@@ -45,7 +55,8 @@ public class Game : MonoBehaviour
         Vector3 randomSphere = Random.insideUnitSphere;
         randomSphere.z = 0;
 
-        GameObject.Instantiate(bulletPrefab, spawnPosition.transform.position + randomSphere, spawnPosition.transform.rotation);
+        var bullet = GameObject.Instantiate(bulletPrefab, spawnPosition.transform.position + randomSphere, spawnPosition.transform.rotation);
+        bullet.transform.parent = bulletsParent.transform;
         bulletInvoked++;
         if (bulletInvoked >= bulletCount) {
             CancelInvoke("InstantiateBullet");
@@ -74,7 +85,10 @@ public class Game : MonoBehaviour
         GameObject obstacleTemplate = posibleObstacle[(int)Random.Range(0f, (float)posibleObstacle.Length)];
         Transform obstacleSpwanPosition = posibleSpawnObstacle[(int)Random.Range(0f, (float)posibleSpawnObstacle.Length)];
         GameObject obstacle = Instantiate(obstacleTemplate, obstacleSpwanPosition.position, obstacleSpwanPosition.rotation);
+        obstacle.transform.parent = ObstaclesParent.transform;
         obstacle.GetComponent<Obstacle>().initialPoint = GetObstacleInitPoint();
+
+        GetComponent<Projection>().UpdatePysicsScene();
 
         PrepareToShot(true);
         readyToShot = true;
@@ -107,7 +121,12 @@ public class Game : MonoBehaviour
     {
         GetNextWaittingBullet();
         if (null != closestBullet) {
+            closestBullet.gameObject.transform.rotation = Quaternion.identity;
             closestBullet.GetComponent<Bullet>().isFirstBullet = isFirstBullet;
+            if (isFirstBullet) {
+                closestBullet.GetComponent<CircleCollider2D>().enabled = false;
+                closestBullet.GetComponent<BoxCollider2D>().enabled = true;
+            }
             closestBullet.transform.position = shotPosition.transform.position;
             closestBullet.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         }
@@ -121,28 +140,44 @@ public class Game : MonoBehaviour
             Vector2 heading = eventPosition - (Vector2)shotPosition.transform.position;
             float distance = Vector2.Distance(eventPosition, (Vector2)shotPosition.transform.position);
 
-            if (distance > 0.5) {
-                shotDirection = heading / distance;
-                InvokeRepeating("Shot", 0f, spawnerRate);
-                readyToShot = false;
-            }
+            shotDirection = heading / distance;
+            InvokeRepeating("Shot", 0f, spawnerRate);
+            readyToShot = false;
+
+            projection = false;
+            GetComponent<Projection>().line.positionCount = 0;
         }
     }
 
     private void Shot() 
     {
+        projection = false;
         if (bulletShoted >= bulletCount) {
             CancelInvoke("Shot");
         }
         PrepareToShot();
         if (null != closestBullet) {
             closestBullet.GetComponent<Bullet>().isFirstBullet = false;
+            closestBullet.GetComponent<BoxCollider2D>().enabled = false;
             closestBullet.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             closestBullet.GetComponent<Bullet>().changeMaterial(Bullet.materialsType.BOUNCE);
-            closestBullet.GetComponent<Rigidbody2D>().AddForce(shotDirection * 500);
+            closestBullet.GetComponent<Bullet>().Shot(shotDirection);
             closestBullet.tag = "Bullet";
             closestBullet.layer = 8;
             bulletShoted++;
+        }
+    }
+
+    public void Simutate(Vector2 eventPosition)
+    {
+        if (readyToShot && !gameOver)
+        {
+            bulletWaitting = 0;
+            bulletShoted = 0;
+            Vector2 heading = eventPosition - (Vector2)shotPosition.transform.position;
+            float distance = Vector2.Distance(eventPosition, (Vector2)shotPosition.transform.position);
+            projection = true;
+            shotDirection = heading / distance;
         }
     }
 
