@@ -10,7 +10,6 @@ public class Game : MonoBehaviour
     public float spawnerRate;
     public GameObject shotPosition;
     public GameObject bulletPrefab;
-    public GameObject bulletProjectionPrefab;
     public GameObject bulletsParent;
     public int bulletCount;
     public GameObject[] posibleObstacle;
@@ -30,6 +29,7 @@ public class Game : MonoBehaviour
     private bool gameOver = false;
     private int level = 0;
     private int score = 0;
+    private bool projection = false;
 
     public float timeBeforeReSimulate = 1f;
     public float timeBeforeSinceSimulate = 0f;
@@ -44,15 +44,9 @@ public class Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (timeBeforeSinceSimulate >= timeBeforeReSimulate)
+        if (projection)
         {
-            timeBeforeSinceSimulate = 0f;
-            GetComponent<Projection>().SimulateTrajectory(bulletProjectionPrefab, shotPosition.transform.position, Vector2.right);
-        }
-        else
-        {
-            timeBeforeSinceSimulate += Time.deltaTime;
+            GetComponent<Projection>().SimulateTrajectory(bulletPrefab, shotPosition.transform.position, shotDirection);
         }
     }
 
@@ -146,16 +140,18 @@ public class Game : MonoBehaviour
             Vector2 heading = eventPosition - (Vector2)shotPosition.transform.position;
             float distance = Vector2.Distance(eventPosition, (Vector2)shotPosition.transform.position);
 
-            if (distance > 0.5) {
-                shotDirection = heading / distance;
-                InvokeRepeating("Shot", 0f, spawnerRate);
-                readyToShot = false;
-            }
+            shotDirection = heading / distance;
+            InvokeRepeating("Shot", 0f, spawnerRate);
+            readyToShot = false;
+
+            projection = false;
+            GetComponent<Projection>().line.positionCount = 0;
         }
     }
 
     private void Shot() 
     {
+        projection = false;
         if (bulletShoted >= bulletCount) {
             CancelInvoke("Shot");
         }
@@ -180,11 +176,8 @@ public class Game : MonoBehaviour
             bulletShoted = 0;
             Vector2 heading = eventPosition - (Vector2)shotPosition.transform.position;
             float distance = Vector2.Distance(eventPosition, (Vector2)shotPosition.transform.position);
-
-            if (distance > 0.5)
-            {
-                shotDirection = heading / distance;
-            }
+            projection = true;
+            shotDirection = heading / distance;
         }
     }
 

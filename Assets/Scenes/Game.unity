@@ -863,7 +863,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: RESTART
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1177,6 +1177,8 @@ MonoBehaviour:
   levelTextValue: {fileID: 1678653589}
   scoreTextValue: {fileID: 689742769}
   canvasGameOver: {fileID: 1058528046}
+  timeBeforeReSimulate: 1
+  timeBeforeSinceSimulate: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1317,7 +1319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstaclesParent: {fileID: 188700533}
   line: {fileID: 519420037}
-  maxPhysicsFrameIteration: 100
+  maxPhysicsFrameIteration: 30
 --- !u!120 &519420037
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1337,7 +1339,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7e1bfdf68bc1ea945983cd4197106178, type: 2}
+  - {fileID: 2100000, guid: fa9f2a404c3e1c643ad92b9c34b013c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1358,7 +1360,8 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions: []
+  m_Positions:
+  - {x: 0, y: -5.4, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -1409,7 +1412,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 3
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1

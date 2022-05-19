@@ -11,10 +11,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: bullet_projection
       objectReference: {fileID: 0}
-    - target: {fileID: 1941592354553203988, guid: 17566c26428de944b884d6da67561762, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: 75bb94b6f5164e543867606ca3e98599, type: 2}
     - target: {fileID: 1941592354553203990, guid: 17566c26428de944b884d6da67561762, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.862519

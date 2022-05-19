@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
     public PhysicsMaterial2D bounceMaterial;
     public PhysicsMaterial2D staticMaterial;
     public bool isFirstBullet = false;
+    public bool isGhost = false;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +40,7 @@ public class Bullet : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D trigger) {
-        if (trigger.tag == "Trigger-waitting-bullet") {
+        if (trigger.tag == "Trigger-waitting-bullet" && !isGhost) {
             Camera.main.gameObject.GetComponent<Game>().NewWaittingBullet();
             gameObject.tag = "Waitting-bullet";
             gameObject.layer = 0;
@@ -47,7 +48,7 @@ public class Bullet : MonoBehaviour
     }
 
     private void OnTriggerStay2D(Collider2D trigger) {
-        if (trigger.tag == "Bumper") {
+        if (trigger.tag == "Bumper" && !isGhost) {
             changeMaterial(materialsType.STATIC);
             trigger.GetComponents<Bumper>()[0].bump(gameObject);
         }
@@ -55,7 +56,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) 
     {
-        if (other.gameObject.tag == "Obstacle") 
+        if (other.gameObject.tag == "Obstacle" && !isGhost) 
         {
             other.gameObject.GetComponent<Obstacle>().Hit(1, other);
         }
