@@ -8,18 +8,15 @@ public class Bullet : MonoBehaviour
     public PhysicsMaterial2D bounceMaterial;
     public PhysicsMaterial2D staticMaterial;
     public bool isFirstBullet = false;
-    
 
     // Start is called before the first frame update
     void Start()
     {
-        changeMaterial(materialsType.STATIC);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void changeMaterial(materialsType type) 
@@ -32,6 +29,13 @@ public class Bullet : MonoBehaviour
                 gameObject.GetComponent<CircleCollider2D>().sharedMaterial = staticMaterial;
                 break;
         }
+    }
+
+    public void Shot(Vector2 shotDirection)
+    {
+        changeMaterial(Bullet.materialsType.BOUNCE);
+        GetComponent<CircleCollider2D>().enabled = true;
+        GetComponent<Rigidbody2D>().AddForce(shotDirection * 500);
     }
 
     private void OnTriggerEnter2D(Collider2D trigger) {
@@ -61,7 +65,16 @@ public class Bullet : MonoBehaviour
         if (isFirstBullet) {
             Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
             Camera.main.gameObject.GetComponent<Game>().ShotEvent(worldPosition);
         }
+    }
+
+    private void OnMouseDrag()
+    {
+        Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+        Camera.main.gameObject.GetComponent<Game>().Simutate(worldPosition);
     }
 }
