@@ -48,6 +48,29 @@ public class Game : MonoBehaviour
         {
             GetComponent<Projection>().SimulateTrajectory(bulletPrefab, shotPosition.transform.position, shotDirection);
         }
+
+
+        // shake your Rigidbody
+        var x = 0f;
+        var y = 0f;
+
+        if (Mathf.Abs(Input.acceleration.x) > 1f)
+        {
+            x = Input.acceleration.x;
+        }
+
+        if (Mathf.Abs(Input.acceleration.z) > 1f)
+        {
+            y = -Input.acceleration.z * 0.25f;
+        }
+
+        Vector2 shakeVelocity = new Vector2(x, y) * 25;
+        GameObject[] waittingBullets = GameObject.FindGameObjectsWithTag("Waitting-bullet");
+
+        for (int i = 0; i < waittingBullets.Length; i++)
+        {
+            waittingBullets[i].GetComponent<Rigidbody2D>().AddForce(shakeVelocity * Random.Range(0.5f, 1f));
+        }
     }
 
     void InstantiateBullet() 
