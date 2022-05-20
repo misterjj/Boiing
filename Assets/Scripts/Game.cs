@@ -6,33 +6,40 @@ using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
+    //spawn
     public GameObject spawnPosition;
     public float spawnerRate;
-    public GameObject shotPosition;
+
+    // bullet
     public GameObject bulletPrefab;
     public GameObject bulletsParent;
     public int bulletCount;
+    private int bulletInvoked = 0;
+    private int bulletShoted = 0;
+    private int bulletWaitting = 0;
+    private GameObject closestBullet;
+
+    // obstacle
     public GameObject[] posibleObstacle;
-    public Transform[] posibleSpawnObstacle;
     public GameObject ObstaclesParent;
+    public Transform[] posibleSpawnObstacle;
     public int maxObstaclePoint;
     public float difficultyScale;
+    private int lastObstablePossition;
+
+    // shot
+    public GameObject shotPosition;
+    private Vector2 shotDirection;
+    private bool readyToShot = false;
+    private bool projection = false;
+
+    // UI
     public GameObject levelTextValue;
     public GameObject scoreTextValue;
     public GameObject canvasGameOver;
-    private int bulletInvoked = 0;
-    private GameObject closestBullet;
-    private Vector2 shotDirection;
-    private int bulletShoted = 0;
-    private int bulletWaitting = 0;
-    private bool readyToShot = false;
     private bool gameOver = false;
     private int level = 0;
     private int score = 0;
-    private bool projection = false;
-
-    public float timeBeforeReSimulate = 1f;
-    public float timeBeforeSinceSimulate = 0f;
    
 
     // Start is called before the first frame update
@@ -105,11 +112,17 @@ public class Game : MonoBehaviour
             obs.transform.position += Vector3.up;
         }
 
-        GameObject obstacleTemplate = posibleObstacle[(int)Random.Range(0f, (float)posibleObstacle.Length)];
-        Transform obstacleSpwanPosition = posibleSpawnObstacle[(int)Random.Range(0f, (float)posibleSpawnObstacle.Length)];
+        int newObstablePossition = Random.Range(0, posibleSpawnObstacle.Length);
+        while (newObstablePossition == lastObstablePossition)
+        {
+            newObstablePossition = Random.Range(0, posibleSpawnObstacle.Length);
+        }
+        GameObject obstacleTemplate = posibleObstacle[Random.Range(0, posibleObstacle.Length)];
+        Transform obstacleSpwanPosition = posibleSpawnObstacle[newObstablePossition];
         GameObject obstacle = Instantiate(obstacleTemplate, obstacleSpwanPosition.position, obstacleSpwanPosition.rotation);
         obstacle.transform.parent = ObstaclesParent.transform;
         obstacle.GetComponent<Obstacle>().initialPoint = GetObstacleInitPoint();
+        lastObstablePossition = newObstablePossition;
 
         GetComponent<Projection>().UpdatePysicsScene();
 

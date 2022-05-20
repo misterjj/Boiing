@@ -863,7 +863,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: RESTART
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1127,7 +1127,6 @@ GameObject:
   - component: {fileID: 519420035}
   - component: {fileID: 519420036}
   - component: {fileID: 519420037}
-  - component: {fileID: 519420038}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1157,7 +1156,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPosition: {fileID: 1897090401}
   spawnerRate: 0.03
-  shotPosition: {fileID: 669890593}
   bulletPrefab: {fileID: 1941592354553203978, guid: 17566c26428de944b884d6da67561762, type: 3}
   bulletsParent: {fileID: 1832283646}
   bulletCount: 30
@@ -1166,19 +1164,18 @@ MonoBehaviour:
   - {fileID: 3667388070402162039, guid: a4d9589af4725c84991c59a9dc6aef3b, type: 3}
   - {fileID: 8290987040279096797, guid: d79b69adb161fa84a8049bc83f17014d, type: 3}
   - {fileID: 8914419081318928789, guid: 3c68c106e118673498c3011cd271917f, type: 3}
+  ObstaclesParent: {fileID: 188700532}
   posibleSpawnObstacle:
   - {fileID: 1972626273}
   - {fileID: 653065770}
   - {fileID: 1642233051}
   - {fileID: 326782711}
-  ObstaclesParent: {fileID: 188700532}
   maxObstaclePoint: 1000
   difficultyScale: 80
+  shotPosition: {fileID: 669890593}
   levelTextValue: {fileID: 1678653589}
   scoreTextValue: {fileID: 689742769}
   canvasGameOver: {fileID: 1058528046}
-  timeBeforeReSimulate: 1
-  timeBeforeSinceSimulate: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1416,18 +1413,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &519420038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f99a73d993e0584aa6f3efee6ddbf80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &610742162
 PrefabInstance:
   m_ObjectHideFlags: 0
