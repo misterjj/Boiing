@@ -71,7 +71,7 @@ public class Game : MonoBehaviour
             y = -Input.acceleration.z * 0.25f;
         }
 
-        Vector2 shakeVelocity = new Vector2(x, y) * 25;
+        Vector2 shakeVelocity = new Vector2(x, y) * 100;
         GameObject[] waittingBullets = GameObject.FindGameObjectsWithTag("Waitting-bullet");
 
         for (int i = 0; i < waittingBullets.Length; i++)

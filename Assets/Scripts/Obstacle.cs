@@ -9,7 +9,11 @@ public class Obstacle : MonoBehaviour
     public int maxPoint;
     public int initialPoint;
     public GameObject rippleTemplate;
+    public GameObject deathParticles;
+    public float destroyTimer;
     private int currentPoint;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +29,25 @@ public class Obstacle : MonoBehaviour
         // calcule damage
         currentPoint -= damage;
         if (currentPoint <= 0) {
-            Destroy(gameObject);
+            death();
         }
         Camera.main.GetComponent<Game>().UpdateScore();
         Display();
+    }
+
+    private void death()
+    {
+        GetComponent<Renderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.enabled = false;
+        }
+
+        deathParticles.SetActive(true);
+        Destroy(gameObject, destroyTimer);
     }
 
     void Display()
