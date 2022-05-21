@@ -47,6 +47,11 @@ public class Projection : MonoBehaviour
                     child.GetComponent<Renderer>().enabled = false;
                 }
                 
+                if (child.GetComponent<Bonus>() != null)
+                {
+                    Destroy(child.gameObject);
+                }
+                
             }
             SceneManager.MoveGameObjectToScene(ghostObj, _simulationScene);
             

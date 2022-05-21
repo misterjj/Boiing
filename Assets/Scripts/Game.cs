@@ -80,7 +80,7 @@ public class Game : MonoBehaviour
         }
     }
 
-    void InstantiateBullet() 
+    public void InstantiateBullet() 
     {
         Vector3 randomSphere = Random.insideUnitSphere;
         randomSphere.z = 0;

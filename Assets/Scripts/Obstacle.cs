@@ -13,11 +13,37 @@ public class Obstacle : MonoBehaviour
     public float destroyTimer;
     private int currentPoint;
 
+    // bonus
+    public GameObject[] posibleBonus;
+    public float[] probabilityBonus;
+    public Transform bonusSpawnPoint;
+    private Bonus bonus;
+
+    void Awake()
+    {
+        // bonus
+        float previousBonusProb = 0f;
+        float rand = Random.Range(0f, 1f);
+        for (var i = 0; i < probabilityBonus.Length; i++)
+        {
+            if (previousBonusProb + probabilityBonus[i] > rand)
+            {
+                GameObject obj = Instantiate(posibleBonus[i], bonusSpawnPoint.position, Quaternion.identity);
+                obj.name = "bonus";
+                obj.transform.parent = transform;
+                bonus = obj.GetComponent<Bonus>();
+                break;
+            }
+
+            previousBonusProb += probabilityBonus[i];
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         currentPoint = initialPoint;
+
         Display();
     }
 
@@ -45,8 +71,13 @@ public class Obstacle : MonoBehaviour
         {
             renderer.enabled = false;
         }
-
         deathParticles.SetActive(true);
+
+        if (bonus)
+        {
+            bonus.apply();
+        }
+
         Destroy(gameObject, destroyTimer);
     }
 
