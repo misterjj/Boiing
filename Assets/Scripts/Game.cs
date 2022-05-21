@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Game : MonoBehaviour
 {
@@ -32,19 +33,46 @@ public class Game : MonoBehaviour
     private Vector2 shotDirection;
     private bool readyToShot = false;
     private bool projection = false;
+    private int currentHitValue = 1;
+    private int nextHitValue = 1;
+    public int initialHitValue = 1;
 
     // UI
     public GameObject levelTextValue;
     public GameObject scoreTextValue;
+    public GameObject ballsNumberTextValue;
+    public GameObject currentHitTextValue;
+    public GameObject nextHitTextValue;
     public GameObject canvasGameOver;
     private bool gameOver = false;
     private int level = 0;
     private int score = 0;
-   
+
+    // bonus
+    public GameObject bonusWall;
+
+    public void SetNextHitValue(int value)
+    {
+        nextHitValue = value;
+        nextHitTextValue.GetComponent<TextMeshPro>().text = nextHitValue.ToString();
+    }
+    public int GetNextHitValue()
+    {
+        return nextHitValue;
+    }
+
+    public void SetActiveBonusWall(bool active = true)
+    {
+        bonusWall.SetActive(active);
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
+        SetActiveBonusWall(false);
+        currentHitValue = initialHitValue;
+        nextHitValue = initialHitValue;
         InvokeRepeating("InstantiateBullet", 0f, spawnerRate);
     }
 
@@ -88,6 +116,9 @@ public class Game : MonoBehaviour
         var bullet = GameObject.Instantiate(bulletPrefab, spawnPosition.transform.position + randomSphere, spawnPosition.transform.rotation);
         bullet.transform.parent = bulletsParent.transform;
         bulletInvoked++;
+
+        ballsNumberTextValue.GetComponent<TextMeshPro>().text = bulletInvoked.ToString();
+
         if (bulletInvoked >= bulletCount) {
             CancelInvoke("InstantiateBullet");
         }
@@ -96,16 +127,21 @@ public class Game : MonoBehaviour
     public void NewWaittingBullet() 
     {
         bulletWaitting++;
-        if (bulletWaitting == bulletCount) {
+        Debug.Log("bulletWaitting" + bulletWaitting);
+        Debug.Log("bulletInvoked" + bulletInvoked);
+        Debug.Log("bulletWaitting == bulletInvoke" + (bulletWaitting == bulletInvoked));
+
+        if (bulletWaitting == bulletInvoked) {
             NewLevel();
         }
     }
 
     private void NewLevel()
     {
+        SetActiveBonusWall(false);
         UpdateScore();
         level++;
-        levelTextValue.GetComponent<TextMesh>().text = level.ToString();
+        levelTextValue.GetComponent<TextMeshPro>().text = level.ToString();
 
         GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach(GameObject obs in obstacles) {
@@ -126,6 +162,11 @@ public class Game : MonoBehaviour
 
         GetComponent<Projection>().UpdatePysicsScene();
 
+        currentHitValue = nextHitValue;
+        currentHitTextValue.GetComponent<TextMeshPro>().text = currentHitValue.ToString();
+        nextHitValue = initialHitValue;
+        nextHitTextValue.GetComponent<TextMeshPro>().text = nextHitValue.ToString();
+
         PrepareToShot(true);
         readyToShot = true;
     }
@@ -140,6 +181,8 @@ public class Game : MonoBehaviour
         closestBullet = null;
         float minDist = 0f;
         GameObject[] waittingBullets = GameObject.FindGameObjectsWithTag("Waitting-bullet");
+
+        Debug.Log("ici" + waittingBullets.Length);
 
         for (int i = 0; i < waittingBullets.Length; i++) {
             float currentDist = Vector2.Distance(shotPosition.transform.position, waittingBullets[i].transform.position);
@@ -197,7 +240,7 @@ public class Game : MonoBehaviour
             closestBullet.GetComponent<BoxCollider2D>().enabled = false;
             closestBullet.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             closestBullet.GetComponent<Bullet>().changeMaterial(Bullet.materialsType.BOUNCE);
-            closestBullet.GetComponent<Bullet>().Shot(shotDirection);
+            closestBullet.GetComponent<Bullet>().Shot(shotDirection, currentHitValue);
             closestBullet.tag = "Bullet";
             closestBullet.layer = 8;
             bulletShoted++;
@@ -220,7 +263,7 @@ public class Game : MonoBehaviour
     public void UpdateScore()
     {
         score += level;
-        scoreTextValue.GetComponent<TextMesh>().text = score.ToString("0000000");
+        scoreTextValue.GetComponent<TextMeshPro>().text = score.ToString("0000000");
     }
 
 

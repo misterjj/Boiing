@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
     public PhysicsMaterial2D staticMaterial;
     public bool isFirstBullet = false;
     public bool isGhost = false;
+    private int hit = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -32,15 +33,17 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void Shot(Vector2 shotDirection)
+    public void Shot(Vector2 shotDirection, int hit)
     {
+        this.hit = hit;
         changeMaterial(Bullet.materialsType.BOUNCE);
         GetComponent<CircleCollider2D>().enabled = true;
         GetComponent<Rigidbody2D>().AddForce(shotDirection * 500);
     }
 
     private void OnTriggerEnter2D(Collider2D trigger) {
-        if (trigger.tag == "Trigger-waitting-bullet" && !isGhost) {
+        
+        if (trigger.tag == "Trigger-waitting-bullet" && gameObject.tag != "Waitting-bullet" && !isGhost) {
             Camera.main.gameObject.GetComponent<Game>().NewWaittingBullet();
             gameObject.tag = "Waitting-bullet";
             gameObject.layer = 0;
@@ -58,7 +61,7 @@ public class Bullet : MonoBehaviour
     {
         if (other.gameObject.tag == "Obstacle" && !isGhost) 
         {
-            other.gameObject.GetComponent<Obstacle>().Hit(1, other);
+            other.gameObject.GetComponent<Obstacle>().Hit(hit, other);
         }
     }
 

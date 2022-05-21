@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Obstacle : MonoBehaviour
@@ -86,7 +87,7 @@ public class Obstacle : MonoBehaviour
         float time = (float)currentPoint/(float)maxPoint;
         Color color = gradient.Evaluate(time);
         gameObject.GetComponent<SpriteRenderer>().color = color;
-        gameObject.GetComponentInChildren<TextMesh>().text = currentPoint.ToString();
+        gameObject.GetComponentInChildren<TextMeshPro>().text = currentPoint.ToString();
 
         Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
         foreach(Renderer renderer in renderers) {

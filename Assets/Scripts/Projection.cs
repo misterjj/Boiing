@@ -66,7 +66,7 @@ public class Projection : MonoBehaviour
         bullet.GetComponent<Bullet>().isGhost = true;
         bullet.layer = 8;
 
-        bullet.GetComponent<Bullet>().Shot(velocity);
+        bullet.GetComponent<Bullet>().Shot(velocity, 1);
 
         line.positionCount = maxPhysicsFrameIteration;
 
