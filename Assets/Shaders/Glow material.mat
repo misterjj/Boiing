@@ -42,5 +42,5 @@ Material:
     - _Thickness: 0.749
     m_Colors:
     - Color_5E402D59: {r: 4, g: 0.000000333786, b: 0, a: 1}
-    - _Color: {r: 0.4059549, g: 0.29423076, b: 4.80629, a: 1}
+    - _Color: {r: 0.39747792, g: 0.3530769, b: 4.699486, a: 1}
   m_BuildTextureStacks: []

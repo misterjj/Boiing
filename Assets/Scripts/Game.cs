@@ -273,9 +273,4 @@ public class Game : MonoBehaviour
         canvasGameOver.SetActive(true);
         GameObject.Find("/Canvas Game Over/value").GetComponent<Text>().text = score.ToString("0000000");
     }
-
-    public void Restart() 
-    {
-        SceneManager.LoadScene("Game");
-    }
 }
