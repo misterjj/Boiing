@@ -10,6 +10,8 @@ TagManager:
   - Trigger-waitting-bullet
   - Obstacle
   - is-first-bullet
+  - Bonus-wall
+  - return-bullet
   layers:
   - Default
   - TransparentFX

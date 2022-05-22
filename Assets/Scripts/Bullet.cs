@@ -10,15 +10,32 @@ public class Bullet : MonoBehaviour
     public bool isFirstBullet = false;
     public bool isGhost = false;
     private int hit = 1;
+    private Rigidbody2D rb;
+    public int stuckFrameBeforeRelaunche = 1000;
+    private int stuckFrame = 0;
+    private Game game;
 
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+        game = Camera.main.gameObject.GetComponent<Game>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (gameObject.tag == "bullet" && rb.velocity == Vector2.zero)
+        {
+            stuckFrame++;
+            if (stuckFrame >= stuckFrameBeforeRelaunche)
+            {
+                game.ReShotMe(this);
+            }
+        } else
+        {
+            stuckFrame = 0;
+        }
     }
 
     public void changeMaterial(materialsType type) 
@@ -42,18 +59,18 @@ public class Bullet : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D trigger) {
-        
-        if (trigger.tag == "Trigger-waitting-bullet" && gameObject.tag != "Waitting-bullet" && !isGhost) {
-            Camera.main.gameObject.GetComponent<Game>().NewWaittingBullet();
-            gameObject.tag = "Waitting-bullet";
-            gameObject.layer = 0;
-        }
     }
 
     private void OnTriggerStay2D(Collider2D trigger) {
         if (trigger.tag == "Bumper" && !isGhost) {
+            gameObject.tag = "return-bullet";
             changeMaterial(materialsType.STATIC);
             trigger.GetComponents<Bumper>()[0].bump(gameObject);
+        } else if (trigger.tag == "Trigger-waitting-bullet" && gameObject.tag != "Waitting-bullet" && !isGhost)
+        {
+            game.NewWaittingBullet();
+            gameObject.tag = "Waitting-bullet";
+            gameObject.layer = 0;
         }
     }
 
@@ -63,6 +80,10 @@ public class Bullet : MonoBehaviour
         {
             other.gameObject.GetComponent<Obstacle>().Hit(hit, other);
         }
+        if (other.gameObject.tag == "Bonus-wall" && !isGhost)
+        {
+            other.gameObject.GetComponent<BonusWall>().Hit(hit);
+        }
     }
 
     private void OnMouseUp() {
@@ -70,7 +91,7 @@ public class Bullet : MonoBehaviour
             Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
 
-            Camera.main.gameObject.GetComponent<Game>().ShotEvent(worldPosition);
+            game.ShotEvent(worldPosition);
         }
     }
 
@@ -79,6 +100,6 @@ public class Bullet : MonoBehaviour
         Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
 
-        Camera.main.gameObject.GetComponent<Game>().Simutate(worldPosition);
+        game.Simutate(worldPosition);
     }
 }

@@ -30,7 +30,7 @@ public class Game : MonoBehaviour
 
     // shot
     public GameObject shotPosition;
-    private Vector2 shotDirection;
+    private Vector2 shotDirection = Vector2.zero;
     private bool readyToShot = false;
     private bool projection = false;
     private int currentHitValue = 1;
@@ -44,6 +44,7 @@ public class Game : MonoBehaviour
     public GameObject currentHitTextValue;
     public GameObject nextHitTextValue;
     public GameObject canvasGameOver;
+    public GameObject pauseGameOver;
     private bool gameOver = false;
     private int level = 0;
     private int score = 0;
@@ -61,16 +62,21 @@ public class Game : MonoBehaviour
         return nextHitValue;
     }
 
-    public void SetActiveBonusWall(bool active = true)
+    public void SetActiveBonusWall()
     {
-        bonusWall.SetActive(active);
+        Debug.Log("SetActiveBonusWall");
+        foreach (BonusWall wall in bonusWall.GetComponentsInChildren<BonusWall>())
+        {
+            wall.init(level);
+        }
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        SetActiveBonusWall(false);
+        Time.timeScale = 1;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         currentHitValue = initialHitValue;
         nextHitValue = initialHitValue;
         InvokeRepeating("InstantiateBullet", 0f, spawnerRate);
@@ -94,7 +100,7 @@ public class Game : MonoBehaviour
             x = Input.acceleration.x;
         }
 
-        if (Mathf.Abs(Input.acceleration.z) > 1f)
+        if (Mathf.Abs(Input.acceleration.z) > 2f)
         {
             y = -Input.acceleration.z * 0.25f;
         }
@@ -127,9 +133,6 @@ public class Game : MonoBehaviour
     public void NewWaittingBullet() 
     {
         bulletWaitting++;
-        Debug.Log("bulletWaitting" + bulletWaitting);
-        Debug.Log("bulletInvoked" + bulletInvoked);
-        Debug.Log("bulletWaitting == bulletInvoke" + (bulletWaitting == bulletInvoked));
 
         if (bulletWaitting == bulletInvoked) {
             NewLevel();
@@ -138,9 +141,8 @@ public class Game : MonoBehaviour
 
     private void NewLevel()
     {
-        SetActiveBonusWall(false);
-        UpdateScore();
         level++;
+        UpdateScore();
         levelTextValue.GetComponent<TextMeshPro>().text = level.ToString();
 
         GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
@@ -181,8 +183,6 @@ public class Game : MonoBehaviour
         closestBullet = null;
         float minDist = 0f;
         GameObject[] waittingBullets = GameObject.FindGameObjectsWithTag("Waitting-bullet");
-
-        Debug.Log("ici" + waittingBullets.Length);
 
         for (int i = 0; i < waittingBullets.Length; i++) {
             float currentDist = Vector2.Distance(shotPosition.transform.position, waittingBullets[i].transform.position);
@@ -247,6 +247,12 @@ public class Game : MonoBehaviour
         }
     }
 
+    public void ReShotMe(Bullet bullet)
+    {
+        bullet.transform.position = shotPosition.transform.position;
+        bullet.Shot(shotDirection, currentHitValue);
+    }
+
     public void Simutate(Vector2 eventPosition)
     {
         if (readyToShot && !gameOver)
@@ -269,8 +275,19 @@ public class Game : MonoBehaviour
 
     public void GameOver()
     {
+        Time.timeScale = 0;
         gameOver = true;
         canvasGameOver.SetActive(true);
         GameObject.Find("/Canvas Game Over/value").GetComponent<Text>().text = score.ToString("0000000");
+    }
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        pauseGameOver.SetActive(true);
+    }
+    public void Unpause()
+    {
+        Time.timeScale = 1;
+        pauseGameOver.SetActive(false);
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallBonus : Bonus
+public class ShieldBonus : Bonus
 {
     public override void apply()
     {

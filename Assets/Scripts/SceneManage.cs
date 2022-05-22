@@ -11,7 +11,6 @@ public class SceneManage : MonoBehaviour
     }
     public void Play()
     {
-        Debug.Log("click");
         SceneManager.LoadScene("Game");
     }
     public void Feats()
