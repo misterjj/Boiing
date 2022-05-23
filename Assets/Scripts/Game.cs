@@ -142,7 +142,6 @@ public class Game : MonoBehaviour
     private void NewLevel()
     {
         level++;
-        UpdateScore();
         levelTextValue.GetComponent<TextMeshPro>().text = level.ToString();
 
         GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
@@ -266,9 +265,9 @@ public class Game : MonoBehaviour
         }
     }
 
-    public void UpdateScore()
+    public void UpdateScore(int damage)
     {
-        score += level;
+        score += (level * damage);
         scoreTextValue.GetComponent<TextMeshPro>().text = score.ToString("0000000");
     }
 

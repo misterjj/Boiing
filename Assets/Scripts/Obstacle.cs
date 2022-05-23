@@ -58,7 +58,7 @@ public class Obstacle : MonoBehaviour
         if (currentPoint <= 0) {
             death();
         }
-        Camera.main.GetComponent<Game>().UpdateScore();
+        Camera.main.GetComponent<Game>().UpdateScore(damage);
         Display();
     }
 
